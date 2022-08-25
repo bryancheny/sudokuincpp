@@ -1,3 +1,3 @@
-# sudokuincpp
+# terminaltyping
 
-Command line Sudoku! Use arrow keys to move between cells, numbers to fill in the digits. As easy as it can get 
+Command line typing game! Check your WPM and CPM typing scores in a flash!
