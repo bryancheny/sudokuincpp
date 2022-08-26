@@ -3,18 +3,22 @@
 
 #include <string> 
 #include <iostream> 
+#include <vector>
+#include "output.h"
 
 class Gamestate {
     public:
-        Gamestate::Gamestate();
+        Gamestate();
         void show();
         void play();
-        void parseInput();
+        void parseInput(char c);
         void generate();
         void restart();
+        void results();
     private:
         std::string paragraph;
-        int cur_point;
-        int cur_correct_point;
+        size_t cur_point;
+        std::vector<bool> isAccurate;
+        int numCorrect;
 };
 #endif

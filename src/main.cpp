@@ -1,5 +1,5 @@
 #include "output.h"
-
+#include "Gamestate.h"
 
 int main(int argc, char const *argv[])
 {
@@ -10,7 +10,9 @@ int main(int argc, char const *argv[])
     #else 
         std::cout << grey("This text is grey.");
         std::cout << white("This text is white.");
-        std::cout << red("This text is red.");
+        std::cout << red("This text is red.\n");
+        Gamestate game;
+        game.play();
     #endif
     return 0;
 }

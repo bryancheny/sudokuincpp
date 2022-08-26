@@ -21,7 +21,13 @@ cout << k << " I want to be nice today!" << endl;
     #include <cstdio>
     #elif __APPLE__
     #include <termios.h>
-    #endif
+    #endif 
+    // Add getch function to replace 
+    void initTermios(int echo);
+    void resetTermios(void);
+    char getch_(int echo);
+    char getch(void);
+    char getche(void);
 #endif
 
 inline void cls(void)
