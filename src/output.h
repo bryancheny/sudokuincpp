@@ -1,6 +1,8 @@
-#ifndef OUTPUT_H_
-#define OUTPUT_H_
+#ifndef _OUTPUT_H_
+#define _OUTPUT_H_
 
+#include <string>
+#include <iostream>
 
 #ifdef _WIN32
 #include <conio.h>
@@ -20,28 +22,6 @@ cout << k << " I want to be nice today!" << endl;
     #elif __APPLE__
     #include <termios.h>
     #endif
-    inline char getch(void)
-    {
-        struct termios tmtemp, tm;
-        char c;
-        int fd = 0;
-        if (tcgetattr(fd, &tm) != 0)
-        { 
-            return -1;
-        }
-        tmtemp = tm;
-        cfmakeraw(&tmtemp); 
-        if (tcsetattr(fd, TCSANOW, &tmtemp) != 0)
-        { 
-            return -1;
-        }
-        c = getchar();
-        if (tcsetattr(fd, TCSANOW, &tm) != 0)
-        { 
-            return 0;
-        }
-        return c;
-    }
 #endif
 
 inline void cls(void)
@@ -50,6 +30,36 @@ inline void cls(void)
     system("cls");
 #else
     system("clear");
+#endif
+}
+
+inline std::string grey(std::string str) 
+{
+#ifndef _WIN32
+    return "\033[90m" + str + "\033[0m";
+#else
+    SetConsoleTextAttribute(hConsole, 8);
+    return str;
+#endif
+}
+
+inline std::string white(std::string str) 
+{
+#ifndef _WIN32
+    return "\033[100m" + str + "\033[0m";
+#else
+    SetConsoleTextAttribute(hConsole, 15);
+    return str;
+#endif
+}
+
+inline std::string red(std::string str) 
+{
+#ifndef _WIN32
+    return "\033[91m" + str + "\033[0m";
+#else
+    SetConsoleTextAttribute(hConsole, 12);
+    return str;
 #endif
 }
 

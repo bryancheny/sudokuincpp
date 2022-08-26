@@ -1,14 +1,16 @@
-#include <iostream> 
 #include "output.h"
+
 
 int main(int argc, char const *argv[])
 {
     std::cout << "This text will be erased.\n";
     cls();
     #ifdef _WIN32
-        std::cout << "hello Windows!!";
+        cout << "hello Windows!!";
     #else 
-        std::cout << "Hello Apple/Linux!";
+        std::cout << grey("This text is grey.");
+        std::cout << white("This text is white.");
+        std::cout << red("This text is red.");
     #endif
     return 0;
 }
