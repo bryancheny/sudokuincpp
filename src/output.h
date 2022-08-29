@@ -19,8 +19,12 @@ cout << k << " I want to be nice today!" << endl;
     #ifdef __linux__
     #include <termio.h>
     #include <cstdio>
+    #include <sys/ioctl.h>
+    #include <unistd.h>
     #elif __APPLE__
     #include <termios.h>
+    #include <sys/ioctl.h> 
+    #include <unistd.h> 
     #endif 
     // Add getch function to replace 
     void initTermios(int echo);
@@ -29,6 +33,15 @@ cout << k << " I want to be nice today!" << endl;
     char getch(void);
     char getche(void);
 #endif
+
+inline void moveCursor(size_t pos) {
+    
+    #ifndef _WIN32
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w); 
+    std::cout << "\033[" << std::to_string (pos/w.ws_col + 1) << ";" << std::to_string(pos%w.ws_col + 1) << "f";
+    #endif
+}
 
 inline void cls(void)
 {

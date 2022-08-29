@@ -15,7 +15,9 @@ void Gamestate::show() {
             std::cout << red(paragraph.substr(i,1));
         }
     }
-    std::cout << grey(paragraph.substr(cur_point));
+    std::cout << paragraph.substr(cur_point,1);
+    if (cur_point < paragraph.size()) std::cout << grey(paragraph.substr(cur_point+1));
+    moveCursor(cur_point);
 }
 void Gamestate::play() {
     generate();
