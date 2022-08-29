@@ -5,6 +5,7 @@
 #include <iostream> 
 #include <vector>
 #include "output.h"
+#include <thread>
 
 class Gamestate {
     public:
@@ -15,10 +16,12 @@ class Gamestate {
         void generate();
         void restart();
         void results();
+        void timer();
     private:
         std::string paragraph;
         size_t cur_point;
         std::vector<bool> isAccurate;
         int numCorrect;
+        double time;
 };
 #endif

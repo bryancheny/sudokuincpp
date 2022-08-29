@@ -1,15 +1,21 @@
 #include "output.h"
 #include "Gamestate.h"
+#include <thread>
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "This text will be erased.\n";
-    cls();
     #ifdef _WIN32
         cout << "hello Windows!!";
     #else 
         Gamestate game;
-        game.play();
+        #pragma omp parallel
+        #pragma omp sections
+            {
+        #pragma omp section
+              game.play();
+        // #pragma omp section
+        //       game.timer();
+            }
     #endif
     return 0;
 }

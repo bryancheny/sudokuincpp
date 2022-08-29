@@ -75,6 +75,7 @@ inline std::string white(std::string str)
 inline std::string red(std::string str) 
 {
 #ifndef _WIN32
+    if (str == " ") return "\033[1;41m \033[0m";
     return "\033[91m" + str + "\033[0m";
 #else
     SetConsoleTextAttribute(hConsole, 12);
