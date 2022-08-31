@@ -37,6 +37,7 @@ cout << k << " I want to be nice today!" << endl;
 inline void moveCursor(size_t pos) {
     
     #ifndef _WIN32
+
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w); 
     std::cout << "\033[" << std::to_string (pos/w.ws_col + 1) << ";" << std::to_string(pos%w.ws_col + 1) << "f";

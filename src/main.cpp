@@ -1,6 +1,7 @@
 #include "output.h"
 #include "Gamestate.h"
 #include <thread>
+#include "timer.h"
 
 int main(int argc, char const *argv[])
 {
@@ -13,8 +14,9 @@ int main(int argc, char const *argv[])
             {
         #pragma omp section
               game.play();
-        // #pragma omp section
-        //       game.timer();
+        #pragma omp section
+              
+              game.timer();
             }
     #endif
     return 0;

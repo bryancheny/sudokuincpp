@@ -7,7 +7,10 @@ Gamestate::Gamestate() {
     generate();
 }
 void Gamestate::show() {
+#pragma omp critical
+    {
     cls();
+    moveCursor(0);
     for (size_t i = 0; i < isAccurate.size(); i++) {
         if (isAccurate[i]) {
             std::cout << white(paragraph.substr(i,1));
@@ -18,15 +21,12 @@ void Gamestate::show() {
     }
     std::cout << paragraph.substr(cur_point,1);
     if (cur_point < paragraph.size()) std::cout << grey(paragraph.substr(cur_point+1));
-    std::cout << "\n";
-    std::cout << "Time: " << time << "\n" << "\n";
     moveCursor(cur_point);
-    
+    }
 }
 void Gamestate::play() {
     char input;
     while (cur_point < paragraph.length()) {
-        show();
         input = getch();
         parseInput(input);
     }
@@ -63,7 +63,7 @@ void Gamestate::generate() {
 }
 
 void Gamestate::results() {
-    show();
+    // show();
     std::cout << "\n" << std::string(40,' ') << ("Test Results") << '\n';
     std::cout << "Correct: " << numCorrect << '\n';
     std::cout << "Incorrect: " << isAccurate.size() - numCorrect << '\n';
@@ -74,8 +74,10 @@ void Gamestate::timer() {
     while (true)
     {
 #pragma omp critical
-        time += 0.1;
-        std::this_thread::sleep_for(std::chrono::duration<double>(0.1));
+        time += 0.01;
         show();
+        std::cout << "\nTime : " << time << '\n';
+        moveCursor(cur_point);
+        std::this_thread::sleep_for(std::chrono::duration<double>(0.01));     
     }
 }
