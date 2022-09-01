@@ -10,7 +10,6 @@ void Gamestate::show() {
 #pragma omp critical
     {
     cls();
-    moveCursor(0);
     for (size_t i = 0; i < isAccurate.size(); i++) {
         if (isAccurate[i]) {
             std::cout << white(paragraph.substr(i,1));
@@ -21,8 +20,11 @@ void Gamestate::show() {
     }
     std::cout << paragraph.substr(cur_point,1);
     if (cur_point < paragraph.size()) std::cout << grey(paragraph.substr(cur_point+1));
+    std::cout << "\nTime: " << time;
     moveCursor(cur_point);
+    std::cout << std::flush;
     }
+    
 }
 void Gamestate::play() {
     char input;
@@ -73,11 +75,13 @@ void Gamestate::timer() {
     
     while (true)
     {
-#pragma omp critical
-        time += 0.01;
+// #pragma omp critical
         show();
-        std::cout << "\nTime : " << time << '\n';
-        moveCursor(cur_point);
+        time += 0.01;
         std::this_thread::sleep_for(std::chrono::duration<double>(0.01));     
     }
+}
+
+void Gamestate::updateTime(double delta) {
+    time += delta;
 }

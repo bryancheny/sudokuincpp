@@ -17,6 +17,7 @@ class Gamestate {
         void restart();
         void results();
         void timer();
+        void updateTime(double delta);
     private:
         std::string paragraph;
         size_t cur_point;

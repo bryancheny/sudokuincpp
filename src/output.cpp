@@ -1,8 +1,8 @@
 #include "output.h"
-
 #ifndef _WIN32
 static struct termios old, current;
-
+#include <readline/readline.h>
+#include <readline/history.h>
 /* Initialize new terminal i/o settings */
 void initTermios(int echo) 
 {

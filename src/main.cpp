@@ -1,7 +1,7 @@
 #include "output.h"
 #include "Gamestate.h"
 #include <thread>
-#include "timer.h"
+#include <pthread.h>
 
 int main(int argc, char const *argv[])
 {
@@ -13,11 +13,12 @@ int main(int argc, char const *argv[])
         #pragma omp sections
             {
         #pragma omp section
-              game.play();
-        #pragma omp section
-              
+            while (true) {
               game.timer();
             }
+        #pragma omp section
+              game.play();  
+        }
     #endif
     return 0;
 }

@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-
+#include "Gamestate.h" 
 #ifdef _WIN32
 #include <conio.h>
 #include <windows.h> 
