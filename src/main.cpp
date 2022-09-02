@@ -2,13 +2,16 @@
 #include "Gamestate.h"
 #include <thread>
 #include <pthread.h>
+#include <iomanip>
 
 int main(int argc, char const *argv[])
 {
+    std::cout << std::setprecision(2) << std::fixed;
     #ifdef _WIN32
         cout << "hello Windows!!";
     #else 
         Gamestate game;
+        game.show();
         #pragma omp parallel
         #pragma omp sections
         {

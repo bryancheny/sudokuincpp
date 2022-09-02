@@ -13,7 +13,7 @@ class Gamestate {
         Gamestate();
         void show();
         void play();
-        void parseInput(char c);
+        bool parseInput(char c);
         void generate();
         void results();
         void timer();
