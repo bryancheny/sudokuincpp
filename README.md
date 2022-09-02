@@ -1,6 +1,6 @@
 # terminaltyping
 
-Cross platform command line typing game! Check your WPM and CPM typing scores in a flash! Working prototype for Linux. WIP  
+Cross platform command line typing game! Check your WPM and CPM typing scores in a flash! Working prototype for Linux. Doesn't work on Windows yet  
 
 ## How to run
 
