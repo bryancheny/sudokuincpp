@@ -1,3 +1,0 @@
-/home/bryan/terminaltyping/build/CMakeFiles/terminaltyping.dir
-/home/bryan/terminaltyping/build/CMakeFiles/edit_cache.dir
-/home/bryan/terminaltyping/build/CMakeFiles/rebuild_cache.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++  -std=c++11 -fopenmp  -O0 -Wall -g2 -ggdb CMakeFiles/terminaltyping.dir/src/Gamestate.cpp.o CMakeFiles/terminaltyping.dir/src/main.cpp.o CMakeFiles/terminaltyping.dir/src/output.cpp.o -o ../bin/terminaltyping 
