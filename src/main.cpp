@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
         Gamestate game;
         #pragma omp parallel
         #pragma omp sections
-            {
+        {
         #pragma omp section
               game.timer();
         #pragma omp section

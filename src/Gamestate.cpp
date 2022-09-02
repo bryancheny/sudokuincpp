@@ -4,19 +4,21 @@ Gamestate::Gamestate() {
     cur_point = 0;
     numCorrect = 0;
     time = 0.0;
-    generate();
     active = true;
+    generate();
 }
 void Gamestate::show() {
-#pragma omp critical
-    {
     cls();
-    for (size_t i = 0; i < isAccurate.size(); i++) {
-        if (isAccurate[i]) {
-            std::cout << white(paragraph.substr(i,1));
+    for (size_t i = 0; i < isAccurate.size();) {
+        size_t curr = i;
+        i++;
+        for ( ; i < isAccurate.size() && isAccurate[i] == isAccurate[i-1]; i++) {
+        }
+        if (isAccurate[curr]) {
+            std::cout << white(paragraph.substr(curr,i - curr));
         }
         else {
-            std::cout << red(paragraph.substr(i,1));
+            std::cout << red(paragraph.substr(curr,i - curr));
         }
     }
     std::cout << paragraph.substr(cur_point,1);
@@ -24,14 +26,14 @@ void Gamestate::show() {
     std::cout << "\nTime: " << time << "s";
     moveCursor(cur_point);
     std::cout << std::flush;
-    }
-    
 }
 void Gamestate::play() {
     char input;
     while (cur_point < paragraph.length()) {
         input = getch();
         parseInput(input);
+        #pragma omp critical
+        show();
     }
     active = false;
     results();
@@ -63,7 +65,14 @@ void Gamestate::parseInput(char c) {
     }
 }
 void Gamestate::generate() {
-    std::vector<std::string> list = {"\"I'm collecting food for the winter,\" said the ant, \"and I suggest you do the same.\" And off she went, helping the other ants to carry food to their store. The grasshopper carried on hopping and singing. When winter came the ground was covered with snow. The grasshopper had no food and was hungry. So he went to the ants and asked for food.", "I expect to pass through this world but once; any good thing therefore that I can do, or any kindness that I can show to any fellow-creature, let me do it now; let me not defer or neglect it, for I shall not pass this way again.", "When I was a child, I spake as a child, I understood as a child, I thought as a child: but when I became a man, I put away childish things. For now we see through a glass, darkly; but then face to face: now I know in part; but then shall I know even as also I am known."};
+    std::vector<std::string> list = {
+        "Call me Ishmael. Some years ago-never mind how long precisely-having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.", 
+        "I expect to pass through this world but once; any good thing therefore that I can do, or any kindness that I can show to any fellow-creature, let me do it now; let me not defer or neglect it, for I shall not pass this way again.", 
+        "When I was a child, I spake as a child, I understood as a child, I thought as a child: but when I became a man, I put away childish things. For now we see through a glass, darkly; but then face to face: now I know in part; but then shall I know even as also I am known.",
+        "The 1910 Cuba hurricane was said to be one of the worst tropical cyclones that has ever hit Cuba. The storm formed in the southern Caribbean Sea on October 9, 1910.",
+        "When on board H.M.S. 'Beagle,' as naturalist, I was much struck with certain facts in the distribution of the inhabitants of South America, and in the geological relations of the present to the past inhabitants of that continent.",
+        "Christchurch Central Library was the largest library in the South Island and the third-biggest in New Zealand. It opened in 1982 on the corner of Oxford Terrace and Gloucester Street but was closed on the day of the 22 February 2011 Christchurch earthquake."
+        };
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> dist(1,list.size());
@@ -71,7 +80,6 @@ void Gamestate::generate() {
 }
 
 void Gamestate::results() {
-    // show();
     int numIncorrect = isAccurate.size() - numCorrect;
     double rawWPM = (double)isAccurate.size() / 5.0 / (time / 60.0); 
     double rawCPM = (double)isAccurate.size() / (time / 60.0); 
@@ -86,15 +94,18 @@ void Gamestate::results() {
     std::cout << "Accuracy: " << accuracy << "%" << '\n';
     std::cout << "Correct: " << numCorrect << '\n';
     std::cout << "Incorrect: " << numIncorrect << '\n';
-    std::cout << std::string(40,' ') << "You're fast at this!" << '\n';
+    std::cout << std::string(40,' ') << "You're fast!" << '\n';
 }
 
 void Gamestate::timer() {
     while (isRunning())
     {
-        show();
+        #pragma omp critical
+        {
+        show();        
+        }   
         time += 0.1;
-        std::this_thread::sleep_for(std::chrono::duration<double>(0.1));     
+        std::this_thread::sleep_for(std::chrono::duration<double>(0.1));    
     }
 }
 
