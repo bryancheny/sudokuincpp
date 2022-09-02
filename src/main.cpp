@@ -13,9 +13,7 @@ int main(int argc, char const *argv[])
         #pragma omp sections
             {
         #pragma omp section
-            while (true) {
               game.timer();
-            }
         #pragma omp section
               game.play();  
         }

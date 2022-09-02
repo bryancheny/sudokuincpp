@@ -31,7 +31,6 @@ cout << k << " I want to be nice today!" << endl;
     void resetTermios(void);
     char getch_(int echo);
     char getch(void);
-    char getche(void);
 #endif
 
 inline void moveCursor(size_t pos) {

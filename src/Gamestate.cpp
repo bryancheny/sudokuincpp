@@ -5,6 +5,7 @@ Gamestate::Gamestate() {
     numCorrect = 0;
     time = 0.0;
     generate();
+    active = true;
 }
 void Gamestate::show() {
 #pragma omp critical
@@ -20,7 +21,7 @@ void Gamestate::show() {
     }
     std::cout << paragraph.substr(cur_point,1);
     if (cur_point < paragraph.size()) std::cout << grey(paragraph.substr(cur_point+1));
-    std::cout << "\nTime: " << time;
+    std::cout << "\nTime: " << time << "s";
     moveCursor(cur_point);
     std::cout << std::flush;
     }
@@ -32,6 +33,7 @@ void Gamestate::play() {
         input = getch();
         parseInput(input);
     }
+    active = false;
     results();
 }
 void Gamestate::parseInput(char c) {
@@ -61,27 +63,41 @@ void Gamestate::parseInput(char c) {
     }
 }
 void Gamestate::generate() {
-    paragraph = "This text will be replaced by something better and randomly generated I promise!";
+    std::vector<std::string> list = {"\"I'm collecting food for the winter,\" said the ant, \"and I suggest you do the same.\" And off she went, helping the other ants to carry food to their store. The grasshopper carried on hopping and singing. When winter came the ground was covered with snow. The grasshopper had no food and was hungry. So he went to the ants and asked for food.", "I expect to pass through this world but once; any good thing therefore that I can do, or any kindness that I can show to any fellow-creature, let me do it now; let me not defer or neglect it, for I shall not pass this way again.", "When I was a child, I spake as a child, I understood as a child, I thought as a child: but when I became a man, I put away childish things. For now we see through a glass, darkly; but then face to face: now I know in part; but then shall I know even as also I am known."};
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist(1,list.size());
+    paragraph = list[dist(rng) - 1];
 }
 
 void Gamestate::results() {
     // show();
+    int numIncorrect = isAccurate.size() - numCorrect;
+    double rawWPM = (double)isAccurate.size() / 5.0 / (time / 60.0); 
+    double rawCPM = (double)isAccurate.size() / (time / 60.0); 
+    double WPM = rawWPM - (double)numIncorrect / (time / 60.0);
+    double CPM = rawCPM - (double)numIncorrect / (time / 60.0);
+    if (WPM < 0) WPM = 0; // should not be negative
+    double accuracy = (double)numCorrect / ((double)numCorrect + (double)numIncorrect) * 100;
     std::cout << "\n" << std::string(40,' ') << ("Test Results") << '\n';
+    std::cout.precision(3);
+    std::cout << "Words Per Minute: " << WPM << "WPM" << '\n';
+    std::cout << "Characters Per Minute: " << CPM << "CPM" << '\n';
+    std::cout << "Accuracy: " << accuracy << "%" << '\n';
     std::cout << "Correct: " << numCorrect << '\n';
-    std::cout << "Incorrect: " << isAccurate.size() - numCorrect << '\n';
+    std::cout << "Incorrect: " << numIncorrect << '\n';
+    std::cout << std::string(40,' ') << "You're fast at this!" << '\n';
 }
 
 void Gamestate::timer() {
-    
-    while (true)
+    while (isRunning())
     {
-// #pragma omp critical
         show();
-        time += 0.01;
-        std::this_thread::sleep_for(std::chrono::duration<double>(0.01));     
+        time += 0.1;
+        std::this_thread::sleep_for(std::chrono::duration<double>(0.1));     
     }
 }
 
-void Gamestate::updateTime(double delta) {
-    time += delta;
+bool Gamestate::isRunning() {
+    return active;
 }

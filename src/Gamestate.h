@@ -6,6 +6,7 @@
 #include <vector>
 #include "output.h"
 #include <thread>
+#include <random>
 
 class Gamestate {
     public:
@@ -14,15 +15,15 @@ class Gamestate {
         void play();
         void parseInput(char c);
         void generate();
-        void restart();
         void results();
         void timer();
-        void updateTime(double delta);
+        bool isRunning();
     private:
         std::string paragraph;
         size_t cur_point;
         std::vector<bool> isAccurate;
         int numCorrect;
         double time;
+        bool active;
 };
 #endif
