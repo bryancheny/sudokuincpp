@@ -10,7 +10,7 @@ sh build.sh
 ./bin/terminaltyping
 ```
 
-#### Windows
+#### Windows (Not functional yet)
 ```
 Run build.bat 
 Run executable in bin folder
